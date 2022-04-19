@@ -1,25 +1,31 @@
-import React from 'react';
+import React ,{ useState, useEffect }from 'react';
 import { render } from 'react-dom';
 import { StyleSheet,View, Text, Image, } from 'react-native';
+import GetBreed from '../services/getBreed';
+import Images from './Images';
 
-function Breed (props, { navigation }) {
-  
+function Breed (props) {
+  const [listImage, setListImage] = useState([])
+    
+  useEffect(() => {
+      GetBreed(props.name)
+      .then((res) =>{
+        setListImage([...res]);
+      })
+  }, []);
     return(
       <View style={styles.container}>
-        <Image
-          style={{
-            width: 120,
-            height: '100%',
-          }}
-          source={{}}
-        />
         <View style={styles.containerCenter}>
-          <Text style={styles.textTitle}></Text>
-          <Text style={styles.textDuration}></Text>
-          <Text style={styles.textGender}></Text>
+          <Text style={styles.textTitle}  onPress={() => props.navigation.navigate('Details',{
+            name: props.name,
+            listImage
+          })}>{props.name}</Text>
+        </View> 
+        <View >
+          <Images breed={props.name} image={listImage[0] } >
+          </Images>
         </View>
-        
-    </View>
+      </View>
     )
 }
 
@@ -27,47 +33,21 @@ export default Breed;
 
 const styles = StyleSheet.create({
     container: {
-      flexDirection: 'row',
+      flexDirection: 'column',
       width: '100%',
-      marginVertical: 10,
+      height:300,
+      marginVertical: 5,
     },
     containerCenter: {
-      flex: 1,
-      position: 'relative',
-      padding: 25,
-      paddingBottom: 50,
-    },
-    containerValuation: {
-      position: 'absolute',
-      bottom: 0,
-      left: -10,
-    },
-    containerBookmark: {
-      alignItems: 'flex-end',
-      paddingTop: 25,
-    },
-    containerCinema: {
-      position: 'absolute',
-      bottom: 0,
-      left: 80,
       flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 1,
+      justifyContent: 'space-between',
+      padding: 15,      
     },
+    
     textTitle: {
       color: 'white',
-      fontSize: 20,
+      fontSize: 15,
       fontWeight: 'bold',
     },
-    textDuration: {
-      color: 'gray',
-      fontSize: 15,
-      fontWeight: '400',
-      paddingBottom: 10,
-    },
-    textGender: {
-      color: 'orange',
-      fontSize: 16,
-      fontWeight: '400',
-    },
+    
   });

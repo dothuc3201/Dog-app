@@ -1,13 +1,12 @@
 import { API_URL } from '../setting';
 
-export function GetListBreed(response) {
-    const { results } = response;
-    console.log(response);  
+export function GetImageBreed(response) {
+    const  results  = response.message;
     return results;
   }
   
   export default function GetBreed(breed) {
-    return fetch(`${API_URL}/api/breed/${breed}/images`)
+    return fetch(`${API_URL}/breed/${breed}/images`)
       .then((res) => res.json())
-      .then(GetListBreed);
+      .then(GetImageBreed);
   }
